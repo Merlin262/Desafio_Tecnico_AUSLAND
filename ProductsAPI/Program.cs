@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using ProductsAPI.API.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProductsAPI.Application.Auth;
@@ -18,7 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.AddNpgsqlDbContext<AppDbContext>("DefaultConnection");
+builder.AddNpgsqlDbContext<AppDbContext>("ProductsDb");
 
 builder.Host.UseWolverine(options =>
 {
@@ -79,6 +80,7 @@ if (app.Environment.IsDevelopment())
 
 app.MapDefaultEndpoints();
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseCors("AllowAngular");
 app.UseAuthentication();
 app.UseAuthorization();

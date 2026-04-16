@@ -52,7 +52,7 @@ npm install
 
 ### Option 1 — .NET Aspire (recommended)
 
-> **Before running**, create `ProductsAPI/appsettings.json`:
+> **Before running**, create `ProductsAPI.AppHost/appsettings.json`:
 >
 > The `DefaultConnection` value can be copied directly from the Aspire Dashboard after the first startup (go to the **postgres** resource → **Connection strings**).
 >

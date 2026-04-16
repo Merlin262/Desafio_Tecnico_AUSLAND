@@ -31,8 +31,8 @@ export class LoginComponent {
     const { username, password } = this.form.value;
     this.auth.login(username, password).subscribe({
       next: () => this.router.navigate(['/app/products']),
-      error: () => {
-        this.error = 'Usuário ou senha inválidos.';
+      error: (err) => {
+        this.error = err.error?.message ?? 'Erro ao fazer login.';
         this.loading = false;
       }
     });
