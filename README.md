@@ -1,6 +1,6 @@
 # ProductsAPI
 
-Full-stack product management application with user authentication, built with .NET 10 and Angular 21.
+Full-stack product management application with user authentication, built with .NET 10 and Angular 20.
 
 ## Tech Stack
 
@@ -13,7 +13,7 @@ Full-stack product management application with user authentication, built with .
 - Swagger / OpenAPI
 
 **Frontend**
-- Angular 21 (standalone components, Signals)
+- Angular 20 (standalone components, Signals)
 - TypeScript 5.9 / RxJS 7.8
 - Reactive Forms + Route Guards
 
@@ -159,6 +159,26 @@ PostgreSQL 16 with EF Core migrations.
 
 - Products use **soft delete** — deleted records are filtered automatically via a global EF query filter.
 - Passwords are hashed with SHA256 + random 16-byte salt (`salt.hash` Base64 format).
+
+---
+
+## Unit Tests
+
+The `ProductAPI.UnitTests` project covers handlers, services, and repositories using **xUnit**, **Moq**, and **EF Core InMemory**.
+
+### Run
+
+```bash
+dotnet test ProductAPI.UnitTests/ProductAPI.UnitTests.csproj
+```
+
+### Coverage
+
+| Layer | Classes tested | Strategy |
+|---|---|---|
+| **Handlers** | `CreateProduct`, `UpdateProduct`, `DeleteProduct`, `GetAllProducts`, `GetProductById`, `Login`, `Register` | Moq (`IProductRepository`, `IUserRepository`, `JwtTokenService`) |
+| **Services** | `ProductService`, `AuthService` | Moq (`IProductRepository`, `IUserRepository`, `IConfiguration`) |
+| **Repositories** | `ProductRepository`, `UserRepository` | EF Core InMemory provider — real `AppDbContext` |
 
 ---
 

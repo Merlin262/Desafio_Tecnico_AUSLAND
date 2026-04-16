@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="ProductAPI.UnitTests/ProductAPI.UnitTests.csproj" Id="d3d92bd9-a43b-420f-8ce3-6f014c11660a" />
   <Project Path="ProductsAPI.AppHost/ProductsAPI.AppHost.csproj" />
   <Project Path="ProductsAPI.Application/ProductsAPI.Application.csproj" />
   <Project Path="ProductsAPI.Domain/ProductsAPI.Domain.csproj" />
