@@ -38,8 +38,8 @@ jobs:
       - name: Build e push da imagem
         uses: docker/build-push-action@v6
         with:
-          context: ./ProductsAPI           
-          file: ./ProductsAPI/Dockerfile   
+          context: .
+          file: ./ProductsAPI/Dockerfile
           push: true
           tags: ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.PROJECT_NAME_FOR_DOCKER }}:${{ github.sha }}
 
