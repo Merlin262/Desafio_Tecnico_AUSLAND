@@ -1,0 +1,74 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  background: #1a1a2e;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  gap: 1rem;
+  flex-shrink: 0;
+
+  &__logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: 8px;
+    color: #a0aec0;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+    }
+
+    &.active {
+      background: #4f46e5;
+      color: white;
+    }
+  }
+
+  &__logout {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #a0aec0;
+    padding: 0.6rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+    }
+  }
+}
+
+.main-content {
+  flex: 1;
+  background: #f7f8fc;
+  padding: 2rem;
+  overflow-y: auto;
+}

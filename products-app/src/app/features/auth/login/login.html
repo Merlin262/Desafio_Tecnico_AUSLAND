@@ -1,0 +1,34 @@
+<div class="login-wrapper">
+  <form class="login-card" [formGroup]="form" (ngSubmit)="submit()">
+    <h1>Login</h1>
+
+    <div class="field">
+      <label for="username">Usuário</label>
+      <input id="username" type="text" formControlName="username" placeholder="admin" />
+      @if (form.get('username')?.invalid && form.get('username')?.touched) {
+        <span class="error">Campo obrigatório</span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="password">Senha</label>
+      <input id="password" type="password" formControlName="password" placeholder="••••••••" />
+      @if (form.get('password')?.invalid && form.get('password')?.touched) {
+        <span class="error">Campo obrigatório</span>
+      }
+    </div>
+
+    @if (error) {
+      <p class="error-message">{{ error }}</p>
+    }
+
+    <button type="submit" [disabled]="loading">
+      {{ loading ? 'Entrando...' : 'Entrar' }}
+    </button>
+
+    <p class="register-link">
+      Não tem conta? <a routerLink="/register">Criar conta</a>
+    </p>
+    
+  </form>
+</div>

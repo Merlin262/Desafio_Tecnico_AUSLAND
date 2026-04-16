@@ -1,0 +1,53 @@
+<div class="overlay" (click)="cancelled.emit()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <header class="modal__header">
+      <h2>{{ isEdit ? 'Editar Produto' : 'Novo Produto' }}</h2>
+      <button class="modal__close" (click)="cancelled.emit()">✕</button>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label>Nome</label>
+        <input type="text" formControlName="name" placeholder="Nome do produto" />
+        @if (hasError('name')) {
+          <span class="error">Nome é obrigatório</span>
+        }
+      </div>
+
+      <div class="field">
+        <label>Descrição</label>
+        <textarea formControlName="description" rows="3" placeholder="Descrição do produto"></textarea>
+        @if (hasError('description')) {
+          <span class="error">Descrição é obrigatória</span>
+        }
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Preço</label>
+          <input type="number" formControlName="price" placeholder="0,00" min="0" step="0.01" />
+          @if (hasError('price')) {
+            <span class="error">Preço inválido</span>
+          }
+        </div>
+
+        <div class="field">
+          <label>Estoque</label>
+          <input type="number" formControlName="stock" placeholder="0" min="0" />
+          @if (hasError('stock')) {
+            <span class="error">Estoque inválido</span>
+          }
+        </div>
+      </div>
+
+      <footer class="modal__footer">
+        <button type="button" class="btn btn--ghost" (click)="cancelled.emit()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn--primary" [disabled]="loading">
+          {{ loading ? 'Salvando...' : isEdit ? 'Salvar' : 'Criar' }}
+        </button>
+      </footer>
+    </form>
+  </div>
+</div>

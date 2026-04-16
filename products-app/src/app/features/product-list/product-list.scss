@@ -1,0 +1,132 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin: 0;
+    }
+  }
+}
+
+.table-wrapper {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+
+  th {
+    background: #f7f8fc;
+    padding: 0.85rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #6b7280;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid #f3f4f6;
+    color: #374151;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafafa; }
+
+  &__empty {
+    text-align: center;
+    color: #9ca3af;
+    padding: 2rem !important;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+}
+
+.loading {
+  text-align: center;
+  color: #9ca3af;
+  padding: 3rem;
+}
+
+.toast {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #6ee7b7;
+  font-size: 0.875rem;
+
+  &--error {
+    background: #fef2f2;
+    color: #991b1b;
+    border-color: #fca5a5;
+  }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+
+  &__info {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .btn[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+// botões compartilhados
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &--primary {
+    background: #4f46e5;
+    color: white;
+    &:hover { background: #4338ca; }
+  }
+
+  &--ghost {
+    background: transparent;
+    border: 1px solid #d1d5db;
+    color: #374151;
+    &:hover { background: #f3f4f6; }
+  }
+
+  &--danger {
+    background: transparent;
+    border: 1px solid #fca5a5;
+    color: #dc2626;
+    &:hover { background: #fef2f2; }
+  }
+}

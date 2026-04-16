@@ -1,0 +1,24 @@
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <span>Products</span>
+    </div>
+
+    <nav class="sidebar__nav">
+      <a
+        routerLink="/app/products"
+        routerLinkActive="active"
+        class="sidebar__link">
+        🛍️ Produtos
+      </a>
+    </nav>
+
+    <button class="sidebar__logout" (click)="logout()">
+      Sair
+    </button>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -1,0 +1,41 @@
+<div class="login-wrapper">
+  <form class="login-card" [formGroup]="form" (ngSubmit)="submit()">
+    <h1>Criar Conta</h1>
+
+    <div class="field">
+      <label>Usuário</label>
+      <input type="text" formControlName="username" placeholder="Mínimo 3 caracteres" />
+      @if (hasError('username')) {
+        <span class="error">Mínimo 3 caracteres</span>
+      }
+    </div>
+
+    <div class="field">
+      <label>Senha</label>
+      <input type="password" formControlName="password" placeholder="Mínimo 6 caracteres" />
+      @if (hasError('password')) {
+        <span class="error">Mínimo 6 caracteres</span>
+      }
+    </div>
+
+    <div class="field">
+      <label>Confirmar Senha</label>
+      <input type="password" formControlName="confirmPassword" placeholder="Repita a senha" />
+      @if (form.hasError('passwordMismatch') && form.get('confirmPassword')?.touched) {
+        <span class="error">As senhas não coincidem</span>
+      }
+    </div>
+
+    @if (error) {
+      <p class="error-message">{{ error }}</p>
+    }
+
+    <button type="submit" [disabled]="loading">
+      {{ loading ? 'Criando...' : 'Criar Conta' }}
+    </button>
+
+    <p class="login-link">
+      Já tem conta? <a routerLink="/login">Entrar</a>
+    </p>
+  </form>
+</div>

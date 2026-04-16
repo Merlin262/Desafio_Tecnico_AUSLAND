@@ -1,0 +1,72 @@
+<div class="page">
+  <header class="page__header">
+    <h1>Produtos</h1>
+    <button class="btn btn--primary" (click)="openCreate()">
+      + Novo Produto
+    </button>
+  </header>
+
+  @if (toast()) {
+    <div class="toast" [class.toast--error]="toast()?.type === 'error'">
+      {{ toast()?.message }}
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="loading">Carregando...</div>
+  } @else {
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Preço</th>
+            <th>Estoque</th>
+            <th>Criado em</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (products().length === 0) {
+            <tr>
+              <td colspan="6" class="table__empty">Nenhum produto cadastrado.</td>
+            </tr>
+          }
+          @for (product of products(); track product.id) {
+            <tr>
+              <td>{{ product.name }}</td>
+              <td>{{ product.description }}</td>
+              <td>{{ product.price | currency:'BRL' }}</td>
+              <td>{{ product.stock }}</td>
+              <td>{{ product.createdAt | date:'dd/MM/yyyy' }}</td>
+              <td class="table__actions">
+                <button class="btn btn--ghost" (click)="openEdit(product)">Editar</button>
+                <button class="btn btn--danger" (click)="delete(product.id)">Excluir</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (totalPages() > 1) {
+      <div class="pagination">
+        <button class="btn btn--ghost" [disabled]="pageNumber() === 1" (click)="goToPage(pageNumber() - 1)">
+          &lsaquo; Anterior
+        </button>
+        <span class="pagination__info">Página {{ pageNumber() }} de {{ totalPages() }}</span>
+        <button class="btn btn--ghost" [disabled]="pageNumber() === totalPages()" (click)="goToPage(pageNumber() + 1)">
+          Próxima &rsaquo;
+        </button>
+      </div>
+    }
+  }
+</div>
+
+@if (showForm()) {
+  <app-product-form
+    [product]="selectedProduct()"
+    (saved)="onSaved()"
+    (cancelled)="closeForm()" />
+}
