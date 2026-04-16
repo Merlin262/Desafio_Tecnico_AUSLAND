@@ -3,16 +3,16 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 # copia os csproj e restaura dependências (camada cacheável)
-COPY ["ProductsAPI.API/ProductsAPI.API.csproj", "ProductsAPI.API/"]
+COPY ["ProductsAPI/ProductsAPI.API.csproj", "ProductsAPI/"]
 COPY ["ProductsAPI.Application/ProductsAPI.Application.csproj", "ProductsAPI.Application/"]
 COPY ["ProductsAPI.Domain/ProductsAPI.Domain.csproj", "ProductsAPI.Domain/"]
 COPY ["ProductsAPI.Infrastructure/ProductsAPI.Infrastructure.csproj", "ProductsAPI.Infrastructure/"]
 
-RUN dotnet restore "ProductsAPI.API/ProductsAPI.API.csproj"
+RUN dotnet restore "ProductsAPI/ProductsAPI.API.csproj"
 
 # copia o restante e publica
 COPY . .
-WORKDIR "/src/ProductsAPI.API"
+WORKDIR "/src/ProductsAPI"
 RUN dotnet publish -c Release -o /app/publish
 
 # Estágio 2 — runtime (imagem final menor)
