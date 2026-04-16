@@ -26,7 +26,7 @@ public class LoginHandlerTests
     {
         _mockRepo.Setup(r => r.GetByUsernameAsync("unknown")).ReturnsAsync((User?)null);
 
-        var handler = new LoginHandler(_mockRepo.Object, CreateJwtService());
+        var handler = new LoginHandler(_mockRepo.Object, CreateJwtService(), new InMemoryUserStore());
         var result = await handler.Handle(new LoginCommand("unknown", "password"));
 
         Assert.Null(result);
@@ -40,7 +40,7 @@ public class LoginHandlerTests
 
         _mockRepo.Setup(r => r.GetByUsernameAsync("john")).ReturnsAsync(user);
 
-        var handler = new LoginHandler(_mockRepo.Object, CreateJwtService());
+        var handler = new LoginHandler(_mockRepo.Object, CreateJwtService(), new InMemoryUserStore());
         var result = await handler.Handle(new LoginCommand("john", "wrongpassword"));
 
         Assert.Null(result);
@@ -54,7 +54,7 @@ public class LoginHandlerTests
 
         _mockRepo.Setup(r => r.GetByUsernameAsync("john")).ReturnsAsync(user);
 
-        var handler = new LoginHandler(_mockRepo.Object, CreateJwtService());
+        var handler = new LoginHandler(_mockRepo.Object, CreateJwtService(), new InMemoryUserStore());
         var result = await handler.Handle(new LoginCommand("john", "secret123"));
 
         Assert.NotNull(result);
