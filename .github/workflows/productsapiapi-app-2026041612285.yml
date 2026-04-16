@@ -1,11 +1,14 @@
 name: Build and deploy .NET application to container app productsapiapi-app-2026041612285
+
 on:
   push:
     branches:
-    - master
+      - master
+
 permissions:
   id-token: write
   contents: read
+
 env:
   CONTAINER_APP_CONTAINER_NAME: products-api
   CONTAINER_APP_NAME: productsapiapi-app-2026041612285
@@ -13,45 +16,63 @@ env:
   CONTAINER_REGISTRY_LOGIN_SERVER: productsapiapi20260416123442.azurecr.io
   DOCKER_FILE_PATH: ProductsAPI/Dockerfile
   PROJECT_NAME_FOR_DOCKER: productsapiapi
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout to the branch
-      uses: actions/checkout@v4
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-    - name: Log in to container registry
-      uses: docker/login-action@v3
-      with:
-        registry: ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}
-        username: ${{ secrets.ProductsAPIAPI20260416123442_USERNAME_2200 }}
-        password: ${{ secrets.ProductsAPIAPI20260416123442_PASSWORD_2200 }}
-    - name: Build and push container image to registry
-      uses: docker/build-push-action@v6
-      with:
-        push: true
-        tags: ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.PROJECT_NAME_FOR_DOCKER }}:${{ github.sha }}
-        file: ${{ env.DOCKER_FILE_PATH }}
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login no Azure Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.ProductsAPIAPI20260416123442_USERNAME_2200 }}
+          password: ${{ secrets.ProductsAPIAPI20260416123442_PASSWORD_2200 }}
+
+      - name: Build e push da imagem
+        uses: docker/build-push-action@v6
+        with:
+          context: ./ProductsAPI           
+          file: ./ProductsAPI/Dockerfile   
+          push: true
+          tags: ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.PROJECT_NAME_FOR_DOCKER }}:${{ github.sha }}
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
+
     steps:
-    - name: Azure Login
-      uses: azure/login@v2
-      with:
-        client-id: ${{ vars.productsapiapi_app_2026041612285_CLIENT_ID_C625 }}
-        tenant-id: ${{ vars.productsapiapi_app_2026041612285_TENANT_ID_2200 }}
-        subscription-id: ${{ vars.productsapiapi_app_2026041612285_SUBSCRIPTION_ID_2200 }}
-    - name: Deploy to containerapp
-      uses: azure/CLI@v2
-      with:
-        inlineScript: >
-          az config set extension.use_dynamic_install=yes_without_prompt
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.productsapiapi_app_2026041612285_CLIENT_ID_C625 }}
+          tenant-id: ${{ vars.productsapiapi_app_2026041612285_TENANT_ID_2200 }}
+          subscription-id: ${{ vars.productsapiapi_app_2026041612285_SUBSCRIPTION_ID_2200 }}
 
-          az containerapp registry set --name ${{ env.CONTAINER_APP_NAME }} --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} --server ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} --username ${{ secrets.ProductsAPIAPI20260416123442_USERNAME_2200 }} --password ${{ secrets.ProductsAPIAPI20260416123442_PASSWORD_2200 }}
+      - name: Deploy para Container App
+        uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            az config set extension.use_dynamic_install=yes_without_prompt
 
-          az containerapp update --name ${{ env.CONTAINER_APP_NAME }} --container-name ${{ env.CONTAINER_APP_CONTAINER_NAME }} --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} --image ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.PROJECT_NAME_FOR_DOCKER }}:${{ github.sha }}
-    - name: logout
-      run: >
-        az logout
+            az containerapp registry set \
+              --name ${{ env.CONTAINER_APP_NAME }} \
+              --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} \
+              --server ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} \
+              --username ${{ secrets.ProductsAPIAPI20260416123442_USERNAME_2200 }} \
+              --password ${{ secrets.ProductsAPIAPI20260416123442_PASSWORD_2200 }}
+
+            az containerapp update \
+              --name ${{ env.CONTAINER_APP_NAME }} \
+              --container-name ${{ env.CONTAINER_APP_CONTAINER_NAME }} \
+              --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} \
+              --image ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.PROJECT_NAME_FOR_DOCKER }}:${{ github.sha }}
+
+      - name: Logout Azure
+        run: az logout
