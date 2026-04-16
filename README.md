@@ -38,42 +38,69 @@ The backend follows **Clean Architecture** with CQRS via Wolverine. The frontend
 
 ## Getting Started
 
-### Option 1 — Docker Compose (recommended)
+### Prerequisites
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) running (required by Aspire to spin up PostgreSQL)
+- .NET 10 SDK
+- Node.js (LTS)
 
 ```bash
-docker-compose up -d
+# Install frontend dependencies before the first run
+cd products-app
+npm install
 ```
 
-| Service  | URL                   |
-|----------|-----------------------|
-| API      | http://localhost:5000 |
-| Frontend | http://localhost:4200 |
-| Database | localhost:5432        |
+### Option 1 — .NET Aspire (recommended)
 
-> Migrations run automatically on API startup.
-
----
-
-### Option 2 — .NET Aspire (local development)
+> **Before running**, create `ProductsAPI/appsettings.json`:
+>
+> The `DefaultConnection` value can be copied directly from the Aspire Dashboard after the first startup (go to the **postgres** resource → **Connection strings**).
+>
+> ```json
+> {
+>   "ConnectionStrings": {
+>     "DefaultConnection": ""
+>   },
+>   "Jwt": {
+>     "Key": "<at-least-32-character-secret>",
+>     "Issuer": "ProductsAPI",
+>     "Audience": "ProductsApp",
+>     "ExpiresInMinutes": 120
+>   },
+>   "Logging": {
+>     "LogLevel": {
+>       "Default": "Information",
+>       "Microsoft.AspNetCore": "Warning"
+>     }
+>   },
+>   "AllowedHosts": "*",
+>   "Cors": {
+>     "AllowedOrigins": [
+>       "http://localhost:4200"
+>     ]
+>   }
+> }
+> ```
 
 ```bash
 cd ProductsAPI.AppHost
 dotnet run
 ```
 
-Aspire launches the Aspire Dashboard, PostgreSQL, the API, and the Angular dev server with automatic port allocation and health checks.
+Aspire launches the Aspire Dashboard, PostgreSQL, the API, and the Angular dev server with automatic port allocation and health checks. Migrations run automatically on API startup.
 
 ---
 
-### Option 3 — Manual
+### Option 2 — Manual
 
 **Backend**
+
+> **Before running**, create `ProductsAPI/appsettings.json`:
 
 ```bash
 cd ProductsAPI
 dotnet restore
 dotnet run
-# http://localhost:5021
 ```
 
 **Frontend**
@@ -82,10 +109,7 @@ dotnet run
 cd products-app
 npm install
 npm start
-# http://localhost:4200
 ```
-
-The frontend proxies API requests to `https://localhost:7121` by default (configurable in `proxy.conf.json`).
 
 ---
 
@@ -122,7 +146,7 @@ All product endpoints require `Authorization: Bearer <token>`.
 
 | Method | Endpoint              | Description              |
 |--------|-----------------------|--------------------------|
-| GET    | /api/products         | List products (paginated)|
+| GET    | /api/products         | List products            |
 | GET    | /api/products/{id}    | Get product by ID        |
 | POST   | /api/products         | Create product           |
 | PUT    | /api/products/{id}    | Update product           |
@@ -141,26 +165,6 @@ All product endpoints require `Authorization: Bearer <token>`.
 ```
 
 Full API documentation available at `http://localhost:5021/swagger` when running locally.
-
----
-
-## Configuration
-
-Key settings in `appsettings.json` / `appsettings.Development.json`:
-
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": ""
-  },
-  "Jwt": {
-    "Key": "",
-    "Issuer": "",
-    "Audience": "",
-    "ExpiresInMinutes": 120
-  }
-}
-```
 
 ---
 

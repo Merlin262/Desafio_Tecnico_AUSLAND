@@ -12,32 +12,6 @@ public class ProductRepositoryTests
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options);
 
-    // --- GetAllAsync ---
-
-    [Fact]
-    public async Task GetAllAsync_ShouldReturnOnlyNonDeletedProducts()
-    {
-        await using var context = CreateContext();
-        context.Products.AddRange(
-            new Product { Name = "Active",  Description = "D", Price = 1m, Stock = 1 },
-            new Product { Name = "Deleted", Description = "D", Price = 1m, Stock = 1, IsDeleted = true }
-        );
-        await context.SaveChangesAsync();
-
-        var repo = new ProductRepository(context);
-        var result = (await repo.GetAllAsync()).ToList();
-
-        Assert.Single(result);
-        Assert.Equal("Active", result[0].Name);
-    }
-
-    [Fact]
-    public async Task GetAllAsync_ShouldReturnEmpty_WhenNoProducts()
-    {
-        await using var context = CreateContext();
-        var result = await new ProductRepository(context).GetAllAsync();
-        Assert.Empty(result);
-    }
 
     // --- GetByIdAsync ---
 
@@ -72,7 +46,6 @@ public class ProductRepositoryTests
         context.Products.Add(product);
         await context.SaveChangesAsync();
 
-        // filtro global !IsDeleted deve bloquear o retorno
         var result = await new ProductRepository(context).GetByIdAsync(product.Id);
 
         Assert.Null(result);
@@ -105,7 +78,6 @@ public class ProductRepositoryTests
         Assert.Equal(5, result.Items.Count);
         Assert.Equal(2, result.PageNumber);
         Assert.Equal(5, result.PageSize);
-        // página 2 → Skip(5): produtos 6..10 (ordenados por CreatedAt asc)
         Assert.Equal("Product 06", result.Items[0].Name);
         Assert.Equal("Product 10", result.Items[4].Name);
     }
@@ -240,23 +212,5 @@ public class ProductRepositoryTests
 
         var found = await repo.GetByIdAsync(product.Id);
         Assert.Null(found);
-    }
-
-    [Fact]
-    public async Task DeleteAsync_ShouldNotAffect_OtherProducts()
-    {
-        await using var context = CreateContext();
-        var p1 = new Product { Name = "Keep",   Description = "D", Price = 1m, Stock = 1 };
-        var p2 = new Product { Name = "Delete", Description = "D", Price = 2m, Stock = 2 };
-        context.Products.AddRange(p1, p2);
-        await context.SaveChangesAsync();
-        context.ChangeTracker.Clear();
-
-        var repo = new ProductRepository(context);
-        await repo.DeleteAsync(p2.Id);
-
-        var all = (await repo.GetAllAsync()).ToList();
-        Assert.Single(all);
-        Assert.Equal("Keep", all[0].Name);
     }
 }

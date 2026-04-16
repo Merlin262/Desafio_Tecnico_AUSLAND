@@ -44,12 +44,6 @@ namespace ProductsAPI.AppHost
                         .AddHttpClientInstrumentation()
                         .AddRuntimeInstrumentation();
                 });
-                //.WithTracing(tracing =>
-                //{
-                //    tracing.AddAspNetCoreInstrumentation()
-                //        .AddHttpClientInstrumentation()
-                //        .AddEntityFrameworkCoreInstrumentation(); // rastreia queries SQL!
-                //});
 
             builder.AddOpenTelemetryExporters();
             return builder;

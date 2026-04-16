@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -31,10 +31,6 @@
     <ProjectReference Include="..\ProductsAPI.Application\ProductsAPI.Application.csproj" />
     <ProjectReference Include="..\ProductsAPI.Infrastructure\ProductsAPI.Infrastructure.csproj" />
     <ProjectReference Include="..\ProductsAPI.ServiceDefaults\ProductsAPI.ServiceDefaults.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ProductsAPI.API\" />
   </ItemGroup>
 
 </Project>

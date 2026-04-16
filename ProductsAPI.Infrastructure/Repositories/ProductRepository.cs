@@ -13,9 +13,6 @@ namespace ProductsAPI.Infrastructure.Repositories
 
         public ProductRepository(AppDbContext context) => _context = context;
 
-        public async Task<IEnumerable<Product>> GetAllAsync() =>
-            await _context.Products.AsNoTracking().ToListAsync();
-
         public Task<PagedList<Product>> GetPagedAsync(int pageNumber, int pageSize) =>
             _context.Products.AsNoTracking().OrderBy(p => p.CreatedAt).ToPagedListAsync(pageNumber, pageSize);
 

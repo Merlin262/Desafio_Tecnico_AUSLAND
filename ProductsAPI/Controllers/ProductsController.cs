@@ -7,7 +7,6 @@ using ProductsAPI.Application.Products.Commands.UpdateProduct;
 using ProductsAPI.Application.Products.Queries;
 using ProductsAPI.Application.Products.Queries.GetAllProducts;
 using ProductsAPI.Application.Products.Queries.GetProductById;
-using ProductsAPI.Application.Products.Responses;
 using Wolverine;
 
 namespace ProductsAPI.API.Controllers

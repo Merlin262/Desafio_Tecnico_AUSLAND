@@ -1,6 +1,5 @@
 using ProductsAPI.Application.DTOs;
 using ProductsAPI.Application.Interfaces;
-using ProductsAPI.Application.Products.Responses;
 using ProductsAPI.Domain.Entities;
 using ProductsAPI.Infrastructure.Repositories.Interfaces;
 

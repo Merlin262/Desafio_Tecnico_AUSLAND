@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using ProductsAPI.Application.Auth;
 using ProductsAPI.Application.DTOs;
 using ProductsAPI.Application.Interfaces;
 using ProductsAPI.Domain.Entities;
 using ProductsAPI.Infrastructure.Repositories.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace ProductsAPI.Application.Services
@@ -24,11 +24,10 @@ namespace ProductsAPI.Application.Services
 
         public string? Authenticate(LoginDto loginDto)
         {
-            // Synchronous version for interface compatibility
             var userTask = _userRepository.GetByUsernameAsync(loginDto.Username);
             userTask.Wait();
             var user = userTask.Result;
-            if (user is null || !VerifyPassword(loginDto.Password, user.PasswordHash))
+            if (user is null || !PasswordHasher.Verify(loginDto.Password, user.PasswordHash))
                 return null;
 
             return GenerateToken(user.Username);
@@ -37,7 +36,7 @@ namespace ProductsAPI.Application.Services
         public async Task<AuthResponseDto?> LoginAsync(LoginDto dto)
         {
             var user = await _userRepository.GetByUsernameAsync(dto.Username);
-            if (user is null || !VerifyPassword(dto.Password, user.PasswordHash))
+            if (user is null || !PasswordHasher.Verify(dto.Password, user.PasswordHash))
                 return null;
 
             return new AuthResponseDto(GenerateToken(user.Username), user.Username);
@@ -51,30 +50,11 @@ namespace ProductsAPI.Application.Services
             var user = new User
             {
                 Username = dto.Username,
-                PasswordHash = HashPassword(dto.Password)
+                PasswordHash = PasswordHasher.Hash(dto.Password)
             };
 
             await _userRepository.CreateAsync(user);
             return new AuthResponseDto(GenerateToken(user.Username), user.Username);
-        }
-
-        private static string HashPassword(string password)
-        {
-            var salt = RandomNumberGenerator.GetBytes(16);
-            var hash = SHA256.HashData(Encoding.UTF8.GetBytes(password + Convert.ToBase64String(salt)));
-            return $"{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
-        }
-
-        private static bool VerifyPassword(string password, string storedHash)
-        {
-            var parts = storedHash.Split('.');
-            if (parts.Length != 2) return false;
-
-            var salt = parts[0];
-            var expected = Convert.ToBase64String(
-                SHA256.HashData(Encoding.UTF8.GetBytes(password + salt)));
-
-            return parts[1] == expected;
         }
 
         private string GenerateToken(string username)

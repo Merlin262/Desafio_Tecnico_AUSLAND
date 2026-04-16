@@ -10,7 +10,6 @@ namespace ProductsAPI.Application.Products.Commands.UpdateProduct
 
         public UpdateProductHandler(IProductRepository repository) => _repository = repository;
 
-        // Wolverine entende NotFound automaticamente quando retorna null
         public async Task<bool> Handle(UpdateProductCommand command)
         {
             var existing = await _repository.GetByIdAsync(command.Id);

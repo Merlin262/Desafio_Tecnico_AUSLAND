@@ -5,7 +5,6 @@ namespace ProductsAPI.Infrastructure.Repositories.Interfaces
 {
     public interface IProductRepository
     {
-        Task<IEnumerable<Product>> GetAllAsync();
         Task<PagedList<Product>> GetPagedAsync(int pageNumber, int pageSize);
         Task<Product?> GetByIdAsync(int id);
         Task<Product> CreateAsync(Product product);
