@@ -37,11 +37,8 @@ jobs:
       - name: Restaurar dependências
         run: dotnet restore
 
-      - name: Build da solução
-        run: dotnet build --no-restore --configuration Release
-
-      - name: Rodar testes unitários
-        run: dotnet test ProductAPI.UnitTests/ProductAPI.UnitTests.csproj --no-build --configuration Release --verbosity normal
+      - name: Build e testes unitários
+        run: dotnet test ProductAPI.UnitTests/ProductAPI.UnitTests.csproj --no-restore --configuration Release --verbosity normal
 
   build:
     if: github.event_name == 'push'
