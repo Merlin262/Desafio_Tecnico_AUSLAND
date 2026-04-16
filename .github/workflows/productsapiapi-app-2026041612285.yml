@@ -51,9 +51,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v2
         with:
-          client-id: ${{ vars.productsapiapi_app_2026041612285_CLIENT_ID_C625 }}
-          tenant-id: ${{ vars.productsapiapi_app_2026041612285_TENANT_ID_2200 }}
-          subscription-id: ${{ vars.productsapiapi_app_2026041612285_SUBSCRIPTION_ID_2200 }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Deploy para Container App
         uses: azure/CLI@v2
