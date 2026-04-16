@@ -184,7 +184,7 @@ PostgreSQL 16 with EF Core migrations.
 
 ## Unit Tests
 
-The `ProductAPI.UnitTests` project covers handlers, services, and repositories using **xUnit**, **Moq**, and **EF Core InMemory**.
+The `ProductAPI.UnitTests` project covers handlers, and repositories using **xUnit**, **Moq**, and **EF Core InMemory**.
 
 ### Run
 
@@ -197,7 +197,6 @@ dotnet test ProductAPI.UnitTests/ProductAPI.UnitTests.csproj
 | Layer | Classes tested | Strategy |
 |---|---|---|
 | **Handlers** | `CreateProduct`, `UpdateProduct`, `DeleteProduct`, `GetAllProducts`, `GetProductById`, `Login`, `Register` | Moq (`IProductRepository`, `IUserRepository`, `JwtTokenService`) |
-| **Services** | `ProductService`, `AuthService` | Moq (`IProductRepository`, `IUserRepository`, `IConfiguration`) |
 | **Repositories** | `ProductRepository`, `UserRepository` | EF Core InMemory provider — real `AppDbContext` |
 
 ---
