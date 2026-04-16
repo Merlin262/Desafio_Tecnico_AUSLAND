@@ -100,6 +100,22 @@ The frontend proxies API requests to `https://localhost:7121` by default (config
 
 Both endpoints return `{ token, username }` on success.
 
+**Default in-memory user** (available without database registration):
+
+| Field    | Value    |
+|----------|----------|
+| username | `admin`  |
+| password | `123456` |
+
+Example login request:
+```json
+POST /api/auth/login
+{
+  "username": "admin",
+  "password": "123456"
+}
+```
+
 ### Products
 
 All product endpoints require `Authorization: Bearer <token>`.

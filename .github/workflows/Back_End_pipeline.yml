@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
 permissions:
   id-token: write
@@ -18,7 +21,31 @@ env:
   PROJECT_NAME_FOR_DOCKER: productsapiapi
 
 jobs:
+  test:
+    name: Build e testes unitários
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Restaurar dependências
+        run: dotnet restore
+
+      - name: Build da solução
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Rodar testes unitários
+        run: dotnet test ProductAPI.UnitTests/ProductAPI.UnitTests.csproj --no-build --configuration Release --verbosity normal
+
   build:
+    if: github.event_name == 'push'
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
