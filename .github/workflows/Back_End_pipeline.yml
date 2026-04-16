@@ -37,7 +37,7 @@ jobs:
       - name: Restaurar dependências
         run: dotnet restore
 
-      - name: Build e testes unitários
+      - name: Testes unitários
         run: dotnet test ProductAPI.UnitTests/ProductAPI.UnitTests.csproj --no-restore --configuration Release --verbosity normal
 
   build:
