@@ -4,7 +4,6 @@ using Microsoft.IdentityModel.Tokens;
 using ProductsAPI.Application.Auth;
 using ProductsAPI.Application.Interfaces;
 using ProductsAPI.Application.Products.Commands.CreateProduct;
-using ProductsAPI.Application.Services;
 using ProductsAPI.Infrastructure.Data;
 using ProductsAPI.Infrastructure.Repositories;
 using ProductsAPI.Infrastructure.Repositories.Interfaces;
@@ -27,12 +26,10 @@ builder.Host.UseWolverine(options =>
 });
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddSingleton<InMemoryUserStore>();
