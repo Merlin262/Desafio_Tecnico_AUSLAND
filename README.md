@@ -50,48 +50,7 @@ cd products-app
 npm install
 ```
 
-### Option 1 — .NET Aspire (recommended)
-
-> **Before running**, create `ProductsAPI.AppHost/appsettings.json`:
->
-> The `DefaultConnection` value can be copied directly from the Aspire Dashboard after the first startup (go to the **postgres** resource → **Connection strings**).
->
-> ```json
-> {
->   "ConnectionStrings": {
->     "DefaultConnection": ""
->   },
->   "Jwt": {
->     "Key": "<at-least-32-character-secret>",
->     "Issuer": "ProductsAPI",
->     "Audience": "ProductsApp",
->     "ExpiresInMinutes": 120
->   },
->   "Logging": {
->     "LogLevel": {
->       "Default": "Information",
->       "Microsoft.AspNetCore": "Warning"
->     }
->   },
->   "AllowedHosts": "*",
->   "Cors": {
->     "AllowedOrigins": [
->       "http://localhost:4200"
->     ]
->   }
-> }
-> ```
-
-```bash
-cd ProductsAPI.AppHost
-dotnet run
-```
-
-Aspire launches the Aspire Dashboard, PostgreSQL, the API, and the Angular dev server with automatic port allocation and health checks. Migrations run automatically on API startup.
-
----
-
-### Option 2 — Docker Compose
+### Option 1 — Docker Compose (recommended)
 
 > Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/) running.
 
@@ -138,6 +97,47 @@ As migrations são aplicadas automaticamente quando a API inicia. O serviço `ap
 ```bash
 docker compose down
 ```
+
+---
+
+### Option 2 — .NET Aspire
+
+> **Before running**, create `ProductsAPI.AppHost/appsettings.json`:
+>
+> The `DefaultConnection` value can be copied directly from the Aspire Dashboard after the first startup (go to the **postgres** resource → **Connection strings**).
+>
+> ```json
+> {
+>   "ConnectionStrings": {
+>     "DefaultConnection": ""
+>   },
+>   "Jwt": {
+>     "Key": "<at-least-32-character-secret>",
+>     "Issuer": "ProductsAPI",
+>     "Audience": "ProductsApp",
+>     "ExpiresInMinutes": 120
+>   },
+>   "Logging": {
+>     "LogLevel": {
+>       "Default": "Information",
+>       "Microsoft.AspNetCore": "Warning"
+>     }
+>   },
+>   "AllowedHosts": "*",
+>   "Cors": {
+>     "AllowedOrigins": [
+>       "http://localhost:4200"
+>     ]
+>   }
+> }
+> ```
+
+```bash
+cd ProductsAPI.AppHost
+dotnet run
+```
+
+Aspire launches the Aspire Dashboard, PostgreSQL, the API, and the Angular dev server with automatic port allocation and health checks. Migrations run automatically on API startup.
 
 ---
 
