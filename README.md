@@ -91,7 +91,57 @@ Aspire launches the Aspire Dashboard, PostgreSQL, the API, and the Angular dev s
 
 ---
 
-### Option 2 — Manual
+### Option 2 — Docker Compose
+
+> Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/) running.
+
+**1. Crie o arquivo `.env`** na raiz do projeto a partir do exemplo:
+
+```bash
+cp .env.example .env
+```
+
+Edite o `.env` preenchendo os valores obrigatórios:
+
+```env
+POSTGRES_DB=productsdb
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=your-password-here
+
+JWT_KEY=your-jwt-secret-with-at-least-32-characters
+JWT_ISSUER=ProductsAPI
+JWT_AUDIENCE=ProductsApp
+JWT_EXPIRES_IN_MINUTES=120
+
+CORS_ORIGIN_0=http://localhost:4200
+CORS_ORIGIN_1=https://your-frontend-domain.com
+```
+
+**2. Suba os containers:**
+
+```bash
+docker compose up -d --build
+```
+
+Isso inicia três serviços:
+
+| Serviço    | Endereço               | Descrição              |
+|------------|------------------------|------------------------|
+| `db`       | `localhost:5432`       | PostgreSQL 17          |
+| `api`      | `http://localhost:7121`| ASP.NET Core Web API   |
+| `frontend` | `http://localhost:4200`| Angular SSR (Node/Express) |
+
+As migrations são aplicadas automaticamente quando a API inicia. O serviço `api` aguarda o banco estar saudável antes de iniciar.
+
+**Parar os containers:**
+
+```bash
+docker compose down
+```
+
+---
+
+### Option 3 — Manual
 
 **Backend**
 
