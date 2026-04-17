@@ -18,7 +18,7 @@ var api = builder.AddProject<Projects.ProductsAPI_API>("api")
 
 builder.AddNpmApp("frontend", "../products-app")
     .WithReference(api)
-    .WithHttpEndpoint(port: 4200, env: "PORT")
+    .WithHttpEndpoint(port: 4200, env: "PORT", isProxied: false)
     .WaitFor(api);
 
 builder.Build().Run();
